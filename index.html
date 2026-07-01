@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0e0c09" />
 <title>Maren &amp; Oak — Nordic Coffee House</title>
 <meta name="description" content="Maren & Oak — a Nordic-inspired coffee house in Minneapolis. Slow mornings, single-origin roasts, fresh pastry." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -16,8 +17,11 @@
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
+  /* dark page background so the phone status bar / toolbar areas blend with the
+     hero instead of showing a white/cream strip at the top and bottom */
+  html{background:#0e0c09}
   body{
-    font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:var(--cream);
+    font-family:'Inter',system-ui,sans-serif;color:var(--ink);background:#0e0c09;
     -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
     text-rendering:optimizeLegibility;
   }
@@ -26,8 +30,8 @@
   .nav{
     position:fixed;top:0;left:0;right:0;z-index:50;
     display:flex;align-items:center;justify-content:space-between;
-    padding:16px clamp(20px,5vw,56px);
-    background:rgba(18,16,12,.92);
+    padding:calc(14px + env(safe-area-inset-top)) clamp(20px,5vw,56px) 14px;
+    background:rgba(14,12,9,.94);
     backdrop-filter:blur(14px);
     -webkit-backdrop-filter:blur(14px);
     box-shadow:0 8px 30px -16px rgba(0,0,0,.6);
@@ -59,22 +63,22 @@
   }
   .hero__img{
     position:absolute;inset:0;
-    background:url('https://images.unsplash.com/photo-1521017432531-fbd92d768814?q=92&w=3840&auto=format&fit=crop&sat=-4') center 45%/cover no-repeat;
-    transform:scale(1.045);
-    filter:contrast(1.06) saturate(1.04);
+    background:url('https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?q=92&w=3840&auto=format&fit=crop') 58% 48%/cover no-repeat;
+    transform:scale(1.05);
+    filter:contrast(1.14) saturate(1.06) brightness(.98);
     animation:slowzoom 20s ease-out forwards;
   }
   @keyframes slowzoom{to{transform:scale(1)}}
-  /* clean readable scrim — deepest at the bottom, clear over the photo */
+  /* readable scrim — deep at the bottom for the text, clean over the cup */
   .hero__scrim{
     position:absolute;inset:0;
     background:
-      linear-gradient(to top,rgba(14,12,9,.72) 0%,rgba(14,12,9,.30) 30%,rgba(14,12,9,0) 62%),
-      radial-gradient(120% 80% at 50% 120%,rgba(14,12,9,.35),transparent 60%);
+      linear-gradient(to top,rgba(8,7,5,.82) 0%,rgba(8,7,5,.34) 32%,rgba(8,7,5,0) 64%),
+      radial-gradient(130% 90% at 40% 118%,rgba(8,7,5,.4),transparent 62%);
   }
   .hero__content{
     position:relative;z-index:2;
-    padding:0 clamp(20px,5vw,56px) clamp(48px,8vh,90px);
+    padding:0 clamp(20px,5vw,56px) calc(clamp(48px,8vh,90px) + env(safe-area-inset-bottom));
     max-width:760px;
     animation:rise 1s cubic-bezier(.2,.7,.2,1) both;
   }
@@ -149,7 +153,8 @@
       var hero = document.querySelector('.hero');
       var ticking = false;
       function update(){
-        var trigger = hero.offsetHeight - 90;       // ~once the hero has left the screen
+        // show the nav only once the hero is essentially out of sight
+        var trigger = hero.offsetHeight - 56;
         nav.classList.toggle('nav--show', window.scrollY > trigger);
         ticking = false;
       }
